@@ -5,8 +5,8 @@ import { Crown, Trophy, Timer, Zap } from "lucide-react";
 
 export default function Home() {
   const players = [
-    { rank: 1, name: "BigWins", wagered: 12500, prize: "$250" },
-    { rank: 2, name: "LuckyLeo", wagered: 9800, prize: "$150" },
+    { rank: 1, name: "OJBrunson", wagered: 676767, prize: "$250" },
+    { rank: 2, name: "Jewn", wagered: 696969, prize: "$150" },
     { rank: 3, name: "SpinGod", wagered: 7400, prize: "$100" },
     { rank: 4, name: "SlotsKing", wagered: 5100, prize: "-" },
     { rank: 5, name: "DiceMaster", wagered: 4300, prize: "-" },
