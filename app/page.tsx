@@ -1,30 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Crown, Trophy, Timer, Flame } from "lucide-react";
+import { Crown, Trophy, Timer, Zap } from "lucide-react";
 
 export default function Home() {
   const players = [
-    { rank: 1, name: "BigWins", wagered: 12500, prize: "$2,500" },
-    { rank: 2, name: "LuckyLeo", wagered: 9800, prize: "$1,500" },
-    { rank: 3, name: "SpinGod", wagered: 7400, prize: "$1,000" },
+    { rank: 1, name: "BigWins", wagered: 12500, prize: "$250" },
+    { rank: 2, name: "LuckyLeo", wagered: 9800, prize: "$150" },
+    { rank: 3, name: "SpinGod", wagered: 7400, prize: "$100" },
     { rank: 4, name: "SlotsKing", wagered: 5100, prize: "-" },
     { rank: 5, name: "DiceMaster", wagered: 4300, prize: "-" },
     { rank: 6, name: "RTPHunter", wagered: 3900, prize: "-" },
+    { rank: 7, name: "HighRoller", wagered: 3200, prize: "-" },
+    { rank: 8, name: "BetLord", wagered: 2800, prize: "-" },
   ];
 
-  const topThree = players.slice(0, 3);
+  const podium = [players[1], players[0], players[2]];
   const rest = players.slice(3);
 
   return (
-    <main className="min-h-screen bg-black text-white overflow-hidden">
+    <main className="min-h-screen bg-[#03030a] text-white overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(147,51,234,0.35),_transparent_35%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(88,28,135,0.22),_transparent_40%)]" />
 
-      <section className="relative max-w-6xl mx-auto px-6 py-10">
+      <section className="relative max-w-7xl mx-auto px-6 py-8">
         <nav className="flex items-center justify-between mb-16">
-          <div className="text-2xl font-black tracking-widest">ZULETALB</div>
-          <div className="flex items-center gap-2 text-sm text-zinc-300">
-            <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+          <div className="text-3xl font-black tracking-tight">
+            Zuleta<span className="text-purple-500">LB</span>
+          </div>
+
+          <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-black/50 px-5 py-3 text-sm font-bold">
+            <span className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />
             LIVE WAGER RACE
           </div>
         </nav>
@@ -32,76 +38,103 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-14"
+          className="text-center mb-10"
         >
-          <div className="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 rounded-full px-4 py-2 text-purple-300 mb-6">
-            <Flame size={16} />
-            Weekly Competition
+          <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/50 bg-purple-500/10 px-5 py-2 text-purple-300 font-bold tracking-widest mb-6">
+            <Zap size={16} />
+            BI-WEEKLY COMPETITION
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-5">
-            ZULETALB WAGER RACE
+          <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-none">
+            LUXDROP
+            <br />
+            <span className="text-purple-500 drop-shadow-[0_0_25px_rgba(168,85,247,0.7)]">
+              WAGER RACE
+            </span>
           </h1>
 
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
-            Climb the leaderboard, secure your spot, and compete for weekly prizes.
+          <p className="text-zinc-400 text-lg mt-6">
+            Compete, wager, and climb to the top.
+            <br />
+            Big rewards for the biggest grinders.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-4 mb-12">
-          <StatCard icon={<Trophy />} label="Prize Pool" value="$5,000" />
-          <StatCard icon={<Timer />} label="Ends In" value="3D 12H" />
-          <StatCard icon={<Crown />} label="Top Prize" value="$2,500" />
+        <div className="grid md:grid-cols-3 gap-5 mb-10">
+          <StatCard icon={<Trophy size={38} />} label="Prize Pool" value="$500" />
+          <StatCard icon={<Timer size={38} />} label="Ends In" value="03D 12H" />
+          <StatCard icon={<Crown size={38} />} label="Top Prize" value="$250" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-5 mb-10">
-          {topThree.map((player) => (
+        <div className="grid md:grid-cols-3 gap-6 mb-10 items-end">
+          {podium.map((player) => (
             <motion.div
               key={player.rank}
               whileHover={{ scale: 1.03 }}
-              className={`rounded-3xl border p-6 bg-zinc-950/80 backdrop-blur ${
+              className={`rounded-3xl border bg-black/60 backdrop-blur p-8 text-center ${
                 player.rank === 1
-                  ? "border-yellow-400/60 shadow-[0_0_35px_rgba(250,204,21,0.18)]"
+                  ? "md:-translate-y-6 border-yellow-400 shadow-[0_0_45px_rgba(250,204,21,0.25)]"
                   : player.rank === 2
-                  ? "border-zinc-300/40"
-                  : "border-orange-400/40"
+                  ? "border-zinc-400/60"
+                  : "border-orange-500/60"
               }`}
             >
-              <div className="text-4xl mb-4">
-                {player.rank === 1 ? "🥇" : player.rank === 2 ? "🥈" : "🥉"}
+              <div className="text-7xl mb-4">
+                {player.rank === 1 ? "👑" : player.rank === 2 ? "🥈" : "🥉"}
               </div>
-              <p className="text-zinc-400">Rank #{player.rank}</p>
-              <h2 className="text-3xl font-bold mt-1">{player.name}</h2>
-              <p className="text-green-400 text-2xl font-bold mt-4">
+
+              <div
+                className={`text-7xl font-black ${
+                  player.rank === 1
+                    ? "text-yellow-300"
+                    : player.rank === 2
+                    ? "text-zinc-300"
+                    : "text-orange-400"
+                }`}
+              >
+                {player.rank}
+              </div>
+
+              <h2 className="text-3xl font-black mt-4">{player.name}</h2>
+
+              <p className="text-green-400 text-2xl font-black mt-3">
                 ${player.wagered.toLocaleString()}
               </p>
-              <p className="text-zinc-500 mt-1">Prize: {player.prize}</p>
+
+              <div className="mt-5 rounded-xl border border-purple-500/40 py-3 font-bold tracking-widest">
+                PRIZE: {player.prize}
+              </div>
             </motion.div>
           ))}
         </div>
 
-        <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 overflow-hidden mb-10">
-          <div className="p-6 border-b border-zinc-800">
-            <h2 className="text-2xl font-bold">Full Leaderboard</h2>
-            <p className="text-zinc-500 text-sm">Updated automatically once API is connected.</p>
+        <div className="rounded-3xl border border-purple-500/40 bg-black/60 overflow-hidden mb-8 shadow-[0_0_40px_rgba(147,51,234,0.12)]">
+          <div className="p-7 border-b border-zinc-800">
+            <h2 className="text-3xl font-black tracking-wide">FULL LEADERBOARD</h2>
+            <p className="text-zinc-500 mt-1">
+              Updated automatically once API is connected.
+            </p>
           </div>
 
           <table className="w-full">
-            <thead className="bg-zinc-900 text-zinc-400">
+            <thead className="bg-purple-950/30 text-zinc-300 text-sm tracking-widest">
               <tr className="text-left">
-                <th className="p-5">Rank</th>
-                <th className="p-5">Player</th>
-                <th className="p-5">Wagered</th>
-                <th className="p-5">Prize</th>
+                <th className="p-5">RANK</th>
+                <th className="p-5">PLAYER</th>
+                <th className="p-5">WAGERED</th>
+                <th className="p-5">PRIZE</th>
               </tr>
             </thead>
 
             <tbody>
               {rest.map((player) => (
-                <tr key={player.rank} className="border-t border-zinc-800 hover:bg-purple-500/5">
+                <tr
+                  key={player.rank}
+                  className="border-t border-zinc-900 hover:bg-purple-500/10 transition"
+                >
                   <td className="p-5 font-bold">#{player.rank}</td>
-                  <td className="p-5">{player.name}</td>
-                  <td className="p-5 text-green-400 font-semibold">
+                  <td className="p-5 font-semibold">{player.name}</td>
+                  <td className="p-5 text-green-400 font-black">
                     ${player.wagered.toLocaleString()}
                   </td>
                   <td className="p-5 text-zinc-400">{player.prize}</td>
@@ -111,11 +144,9 @@ export default function Home() {
           </table>
         </div>
 
-        <div className="rounded-3xl border border-purple-500/30 bg-purple-500/10 p-6 text-center">
-          <p className="text-zinc-300">
-            18+ only. Please gamble responsibly. Terms and conditions apply.
-          </p>
-        </div>
+        <footer className="rounded-3xl border border-purple-500/30 bg-black/60 p-6 text-center text-zinc-300">
+          18+ only. Please gamble responsibly.
+        </footer>
       </section>
     </main>
   );
@@ -131,10 +162,10 @@ function StatCard({
   value: string;
 }) {
   return (
-    <div className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 backdrop-blur">
-      <div className="text-purple-400 mb-3">{icon}</div>
-      <p className="text-zinc-500">{label}</p>
-      <h2 className="text-3xl font-black mt-1">{value}</h2>
+    <div className="rounded-3xl border border-purple-500/30 bg-black/60 p-7 backdrop-blur shadow-[0_0_30px_rgba(147,51,234,0.12)]">
+      <div className="text-purple-400 mb-4">{icon}</div>
+      <p className="text-zinc-400 uppercase tracking-widest font-bold">{label}</p>
+      <h2 className="text-4xl font-black mt-2">{value}</h2>
     </div>
   );
 }
