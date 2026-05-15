@@ -6,7 +6,7 @@ import { Crown, Trophy, Timer, Zap } from "lucide-react";
 export default function Home() {
   const players = [
     { rank: 1, name: "OJBrunson", wagered: 676767, prize: "$250" },
-    { rank: 2, name: "Jewn", wagered: 696969, prize: "$150" },
+    { rank: 2, name: "Jewn", wagered: 69696, prize: "$150" },
     { rank: 3, name: "SpinGod", wagered: 7400, prize: "$100" },
     { rank: 4, name: "SlotsKing", wagered: 5100, prize: "-" },
     { rank: 5, name: "DiceMaster", wagered: 4300, prize: "-" },
@@ -16,8 +16,7 @@ export default function Home() {
   ];
 
   const podium = [players[1], players[0], players[2]];
-  const rest = players.slice(3);
-
+  const podium = players.slice(0, 3);
   return (
     <main className="min-h-screen bg-[#03030a] text-white overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(147,51,234,0.35),_transparent_35%)]" />
