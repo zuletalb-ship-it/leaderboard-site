@@ -5,7 +5,41 @@ import { Crown, Trophy, Timer, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 export default function Home() {
   const [players, setPlayers] = useState<any[]>([]);
+const [timeLeft, setTimeLeft] = useState("");
 
+useEffect(() => {
+  function updateCountdown() {
+    const now = new Date();
+
+    // Starting point of your first race
+    const startDate = new Date("2026-05-17T00:00:00-07:00");
+
+    const twoWeeks = 14 * 24 * 60 * 60 * 1000;
+
+    const elapsed = now.getTime() - startDate.getTime();
+
+    const currentCycle = Math.floor(elapsed / twoWeeks);
+
+    const nextEnd = new Date(
+      startDate.getTime() + (currentCycle + 1) * twoWeeks
+    );
+
+    const difference = nextEnd.getTime() - now.getTime();
+
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((difference / (1000 * 60)) % 60);
+    const seconds = Math.floor((difference / 1000) % 60);
+
+    setTimeLeft(`${days}D ${hours}H ${minutes}M ${seconds}S`);
+  }
+
+  updateCountdown();
+
+  const timer = setInterval(updateCountdown, 1000);
+
+  return () => clearInterval(timer);
+}, []);
   useEffect(() => {
     async function fetchLeaderboard() {
       try {
@@ -83,7 +117,7 @@ export default function Home() {
 
         <div className="grid md:grid-cols-3 gap-5 mb-10">
           <StatCard icon={<Trophy size={38} />} label="Prize Pool" value="$500" />
-          <StatCard icon={<Timer size={38} />} label="Ends In" value="03D 12H" />
+          <StatCard icon={<Timer size={38} />} label="Ends In" value={timeLeft} />
           <StatCard icon={<Crown size={38} />} label="Top Prize" value="$250" />
         </div>
 
