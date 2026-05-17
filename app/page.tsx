@@ -2,20 +2,41 @@
 
 import { motion } from "framer-motion";
 import { Crown, Trophy, Timer, Zap } from "lucide-react";
-
+import { useEffect, useState } from "react";
 export default function Home() {
-  const players = [
-    { rank: 1, name: "JEWN", wagered: 676767, prize: "$250" },
-    { rank: 2, name: "OJBRUNSON", wagered: 69000, prize: "$150" },
-    { rank: 3, name: "SpinGod", wagered: 7400, prize: "$100" },
-    { rank: 4, name: "SlotsKing", wagered: 5100, prize: "-" },
-    { rank: 5, name: "DiceMaster", wagered: 4300, prize: "-" },
-    { rank: 6, name: "RTPHunter", wagered: 3900, prize: "-" },
-    { rank: 7, name: "HighRoller", wagered: 3200, prize: "-" },
-    { rank: 8, name: "BetLord", wagered: 2800, prize: "-" },
-  ];
+  const [players, setPlayers] = useState<any[]>([]);
 
-  const podium = [players[1], players[0], players[2]];
+  useEffect(() => {
+    async function fetchLeaderboard() {
+      try {
+        const response = await fetch("/api/leaderboard");
+        const data = await response.json();
+
+        const formatted = data
+          .sort((a: any, b: any) => b.wagered - a.wagered)
+          .map((player: any, index: number) => ({
+            rank: index + 1,
+            name: player.username,
+            wagered: player.wagered,
+            deposited: player.deposited,
+            avatar: player.avatar,
+          }));
+
+        setPlayers(formatted);
+      } catch (error) {
+        console.error("Failed to fetch leaderboard", error);
+      }
+    }
+
+    fetchLeaderboard();
+
+    const interval = setInterval(fetchLeaderboard, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
+ 
+
+  const podium = players.slice(0, 3);
   const rest = players.slice(3);
 
   return (

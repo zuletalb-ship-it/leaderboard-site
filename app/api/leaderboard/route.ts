@@ -1,47 +1,44 @@
 import { NextResponse } from "next/server";
+import axios from "axios";
+import { HttpsProxyAgent } from "https-proxy-agent";
+
+export const runtime = "nodejs";
 
 export async function GET() {
   const apiKey = process.env.LUXDROP_API_KEY;
+  const proxyUrl = process.env.PROXY_URL;
   const affiliateCode = "Zuleta";
 
   if (!apiKey) {
-    return NextResponse.json(
-      { error: "Missing LUXDROP_API_KEY in .env.local" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Missing LUXDROP_API_KEY" }, { status: 500 });
+  }
+
+  if (!proxyUrl) {
+    return NextResponse.json({ error: "Missing PROXY_URL" }, { status: 500 });
   }
 
   try {
-    const url = `https://api.luxdrop.com/external/affiliates?codes=${affiliateCode}`;
+    const agent = new HttpsProxyAgent(proxyUrl);
 
-    const response = await fetch(url, {
-  headers: {
-    "x-api-key": apiKey,
-    "User-Agent": "Mozilla/5.0",
-    "Accept": "application/json",
-  },
-      cache: "no-store",
-    });
-
-    const text = await response.text();
-
-    if (!response.ok) {
-      return NextResponse.json(
-        {
-          error: "LuxDrop API returned an error",
-          status: response.status,
-          details: text,
+    const response = await axios.get(
+      `https://api.luxdrop.com/external/affiliates?codes=${affiliateCode}`,
+      {
+        headers: {
+          "x-api-key": apiKey,
+          Accept: "application/json",
         },
-        { status: response.status }
-      );
-    }
+        httpsAgent: agent,
+        proxy: false,
+      }
+    );
 
-    return NextResponse.json(JSON.parse(text));
-  } catch (error) {
+    return NextResponse.json(response.data);
+  } catch (error: any) {
     return NextResponse.json(
       {
         error: "Failed to fetch LuxDrop API",
-        details: String(error),
+        details: error.message,
+        response: error.response?.data,
       },
       { status: 500 }
     );
