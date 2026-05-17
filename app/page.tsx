@@ -69,7 +69,7 @@ useEffect(() => {
     return () => clearInterval(interval);
   }, []);
  
-
+  const prizes = ["$250", "$150", "$100"];
   const podium = players.slice(0, 3);
   const rest = players.slice(3);
 
@@ -157,7 +157,7 @@ useEffect(() => {
               </p>
 
               <div className="mt-5 rounded-xl border border-purple-500/40 py-3 font-bold tracking-widest">
-                PRIZE: {player.prize}
+                PRIZE: {prizes[player.rank - 1]}
               </div>
             </motion.div>
           ))}
