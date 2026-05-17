@@ -128,7 +128,7 @@ useEffect(() => {
               whileHover={{ scale: 1.03 }}
               className={`rounded-3xl border bg-black/60 backdrop-blur p-8 text-center ${
                 player.rank === 1
-                  ? "md:-translate-y-6 border-yellow-400 shadow-[0_0_45px_rgba(250,204,21,0.25)]"
+                  ? "border-yellow-400 shadow-[0_0_45px_rgba(250,204,21,0.25)]"
                   : player.rank === 2
                   ? "border-zinc-400/60"
                   : "border-orange-500/60"
