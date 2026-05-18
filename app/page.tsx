@@ -70,7 +70,7 @@ useEffect(() => {
   }, []);
  
   const prizes = ["$250", "$150", "$100"];
-  const podium = players.slice(0, 3);
+  const podium = [players[1], players[0], players[2]].filter(Boolean);
   const rest = players.slice(3);
 
   return (
@@ -128,7 +128,7 @@ useEffect(() => {
               whileHover={{ scale: 1.03 }}
               className={`rounded-3xl border bg-black/60 backdrop-blur p-8 text-center ${
                 player.rank === 1
-                  ? "border-yellow-400 shadow-[0_0_45px_rgba(250,204,21,0.25)]"
+                  ? "md:-translate-y-6 border-yellow-400 shadow-[0_0_45px_rgba(250,204,21,0.25)]"
                   : player.rank === 2
                   ? "border-zinc-400/60"
                   : "border-orange-500/60"
@@ -167,7 +167,7 @@ useEffect(() => {
           <div className="p-7 border-b border-zinc-800">
             <h2 className="text-3xl font-black tracking-wide">FULL LEADERBOARD</h2>
             <p className="text-zinc-500 mt-1">
-              Updated automatically once API is connected.
+              
             </p>
           </div>
 
