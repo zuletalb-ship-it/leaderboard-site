@@ -142,7 +142,7 @@ useEffect(() => {
               <h2 className="text-3xl font-black mt-4">{player.name}</h2>
 
               <p className="text-green-400 text-2xl font-black mt-3">
-                ${player.wagered.toLocaleString()}
+                ${(player.wagered || 0).toLocaleString()}
               </p>
 
               <div className="mt-5 rounded-xl border border-purple-500/40 py-3 font-bold tracking-widest">
@@ -179,7 +179,7 @@ useEffect(() => {
                   <td className="p-5 font-bold">#{player.rank}</td>
                   <td className="p-5 font-semibold">{player.name}</td>
                   <td className="p-5 text-green-400 font-black">
-                    ${player.wagered.toLocaleString()}
+                    ${(player.wagered || 0).toLocaleString()}
                   </td>
                   <td className="p-5 text-zinc-400">{player.prize}</td>
                 </tr>
