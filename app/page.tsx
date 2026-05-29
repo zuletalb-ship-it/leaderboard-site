@@ -36,11 +36,11 @@ useEffect(() => {
         const data = await response.json();
 
         const formatted = data.leaderboard
-          .sort((a: any, b: any) => b.wagered - a.wagered)
+          .sort((a: any, b: any) => b.wagerAmount - a.wagerAmount)
           .map((player: any, index: number) => ({
             rank: index + 1,
             name: player.username,
-            wagered: player.wagered,
+            wagered: player.wagerAmount,
             deposited: player.deposited,
             avatar: player.avatar,
           }));
