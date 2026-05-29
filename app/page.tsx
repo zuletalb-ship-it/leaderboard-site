@@ -11,18 +11,7 @@ useEffect(() => {
   function updateCountdown() {
     const now = new Date();
 
-    // Starting point of your first race
-    const startDate = new Date("2026-05-17T00:00:00-07:00");
-
-    const twoWeeks = 14 * 24 * 60 * 60 * 1000;
-
-    const elapsed = now.getTime() - startDate.getTime();
-
-    const currentCycle = Math.floor(elapsed / twoWeeks);
-
-    const nextEnd = new Date(
-      startDate.getTime() + (currentCycle + 1) * twoWeeks
-    );
+    let nextEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0);
 
     const difference = nextEnd.getTime() - now.getTime();
 
@@ -46,7 +35,7 @@ useEffect(() => {
         const response = await fetch("/api/leaderboard");
         const data = await response.json();
 
-        const formatted = data
+        const formatted = data.leaderboard
           .sort((a: any, b: any) => b.wagered - a.wagered)
           .map((player: any, index: number) => ({
             rank: index + 1,
@@ -69,7 +58,7 @@ useEffect(() => {
     return () => clearInterval(interval);
   }, []);
  
-  const prizes = ["$250", "$150", "$100"];
+  const prizes = ["$800", "$500", "$350", "$200", "$150"];
   const podium = [players[1], players[0], players[2]].filter(Boolean);
   const rest = players.slice(3);
 
@@ -97,11 +86,11 @@ useEffect(() => {
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/50 bg-purple-500/10 px-5 py-2 text-purple-300 font-bold tracking-widest mb-6">
             <Zap size={16} />
-            BI-WEEKLY COMPETITION
+            MONTHLY COMPETITION
           </div>
 
           <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-none">
-            LUXDROP
+            PACKDRAW
             <br />
             <span className="text-purple-500 drop-shadow-[0_0_25px_rgba(168,85,247,0.7)]">
               WAGER RACE
@@ -116,9 +105,9 @@ useEffect(() => {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-5 mb-10">
-          <StatCard icon={<Trophy size={38} />} label="Prize Pool" value="$500" />
+          <StatCard icon={<Trophy size={38} />} label="Prize Pool" value="$2000" />
           <StatCard icon={<Timer size={38} />} label="Ends In" value={timeLeft} />
-          <StatCard icon={<Crown size={38} />} label="Top Prize" value="$250" />
+          <StatCard icon={<Crown size={38} />} label="Top Prize" value="$800" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-10 items-end">

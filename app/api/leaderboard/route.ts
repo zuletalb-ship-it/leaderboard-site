@@ -1,44 +1,44 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
-import { HttpsProxyAgent } from "https-proxy-agent";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  const apiKey = process.env.LUXDROP_API_KEY;
-  const proxyUrl = process.env.PROXY_URL;
-  const affiliateCode = "Zuleta";
+  const apiKey = process.env.PACKDRAW_API_KEY;
+  console.log("PACKDRAW KEY EXISTS:", !!apiKey);
+console.log("PACKDRAW KEY START:", apiKey?.slice(0, 8));
+console.log("PACKDRAW KEY END:", apiKey?.slice(-4));
 
   if (!apiKey) {
-    return NextResponse.json({ error: "Missing LUXDROP_API_KEY" }, { status: 500 });
-  }
-
-  if (!proxyUrl) {
-    return NextResponse.json({ error: "Missing PROXY_URL" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Missing PACKDRAW_API_KEY" },
+      { status: 500 }
+    );
   }
 
   try {
-    const agent = new HttpsProxyAgent(proxyUrl);
+    const startDate = "8-20-2023";
 
-    const response = await axios.get(
-      `https://api.luxdrop.com/external/affiliates?codes=${affiliateCode}`,
-      {
-        headers: {
-          "x-api-key": apiKey,
-          Accept: "application/json",
-        },
-        httpsAgent: agent,
-        proxy: false,
-      }
-    );
+    const url = `https://packdraw.com/api/v1/affiliates/leaderboard?after=${startDate}&apiKey=${apiKey}`;
 
-    return NextResponse.json(response.data);
-  } catch (error: any) {
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: "PackDraw API error", details: data },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
     return NextResponse.json(
       {
-        error: "Failed to fetch LuxDrop API",
-        details: error.message,
-        response: error.response?.data,
+        error: "Failed to fetch PackDraw API",
+        details: String(error),
       },
       { status: 500 }
     );
