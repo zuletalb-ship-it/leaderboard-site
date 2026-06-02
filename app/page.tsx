@@ -181,7 +181,19 @@ useEffect(() => {
                   <td className="p-5 text-green-400 font-black">
                     ${(player.wagered || 0).toLocaleString()}
                   </td>
-                  <td className="p-5 text-zinc-400">{player.prize}</td>
+                  <td className="p-5">
+  {player.rank === 4 && (
+    <span className="rounded-full border border-purple-500/40 px-3 py-1 text-sm font-bold text-purple-300">
+      $200
+    </span>
+  )}
+
+  {player.rank === 5 && (
+    <span className="rounded-full border border-purple-500/40 px-3 py-1 text-sm font-bold text-purple-300">
+      $150
+    </span>
+  )}
+</td>
                 </tr>
               ))}
             </tbody>
