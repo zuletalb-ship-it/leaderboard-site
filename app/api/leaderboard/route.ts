@@ -16,7 +16,9 @@ console.log("PACKDRAW KEY END:", apiKey?.slice(-4));
   }
 
   try {
-    const startDate = "8-20-2023";
+    const now = new Date();
+
+const startDate = `${now.getMonth() + 1}-1-${now.getFullYear()}`;
 
     const url = `https://packdraw.com/api/v1/affiliates/leaderboard?after=${startDate}&apiKey=${apiKey}`;
 
