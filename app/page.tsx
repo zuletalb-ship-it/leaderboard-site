@@ -11,7 +11,7 @@ useEffect(() => {
   function updateCountdown() {
     const now = new Date();
 
-    let nextEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0);
+    let nextEnd = new Date("2026-10-11T00:00:00-07:00");
 
     const difference = nextEnd.getTime() - now.getTime();
 
