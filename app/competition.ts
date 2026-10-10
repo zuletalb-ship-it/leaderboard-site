@@ -9,8 +9,9 @@ export const CURRENT_COMPETITION = {
 export function getCompetitionStart(now = new Date()) {
   const currentEnd = new Date(CURRENT_COMPETITION.end);
 
+  // Keep the correct PackDraw API date format.
   if (now < currentEnd) {
-    return CURRENT_COMPETITION.start;
+    return "9-5-2026";
   }
 
   const pacificDate = new Intl.DateTimeFormat("en-US", {

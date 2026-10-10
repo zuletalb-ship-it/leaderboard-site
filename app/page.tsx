@@ -5,13 +5,64 @@ import { Crown, Trophy, Timer, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 export default function Home() {
   const [players, setPlayers] = useState<any[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
 const [timeLeft, setTimeLeft] = useState("");
 
 useEffect(() => {
   function updateCountdown() {
     const now = new Date();
 
-    let nextEnd = new Date("2026-10-11T00:00:00-07:00");
+    
+const pacificParts = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Los_Angeles",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+}).formatToParts(now);
+
+const parts = Object.fromEntries(
+  pacificParts.map((part) => [part.type, part.value])
+);
+
+let year = Number(parts.year);
+let month = Number(parts.month);
+
+if (Number(parts.day) >= 11) {
+  month++;
+
+  if (month > 12) {
+    month = 1;
+    year++;
+  }
+}
+
+
+const getPacificOffset = (year: number, month: number) => {
+  const secondSundayInMarch =
+    8 + ((7 - new Date(Date.UTC(year, 2, 1)).getUTCDay()) % 7);
+
+  const firstSundayInNovember =
+    1 + ((7 - new Date(Date.UTC(year, 10, 1)).getUTCDay()) % 7);
+
+  const isDaylightSaving =
+    month > 3 && month < 11
+      ? true
+      : month === 3
+        ? 11 >= secondSundayInMarch
+        : month === 11
+          ? 11 < firstSundayInNovember
+          : false;
+
+  return isDaylightSaving ? "-07:00" : "-08:00";
+};
+
+const offset = getPacificOffset(year, month);
+
+const nextEnd = new Date(
+  `${year}-${String(month).padStart(2, "0")}-11T00:00:00${offset}`
+);
+
+
 
     const difference = nextEnd.getTime() - now.getTime();
 
@@ -58,6 +109,25 @@ useEffect(() => {
     return () => clearInterval(interval);
   }, []);
  
+useEffect(() => {
+  async function fetchHistory() {
+    try {
+      const response = await fetch("/api/history");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch history");
+      }
+
+      const data = await response.json();
+      setHistory(data.history || []);
+    } catch (error) {
+      console.error("Failed to load history:", error);
+    }
+  }
+
+  fetchHistory();
+}, []);
+
   const prizes = ["$1600", "$1000", "$700", "$400", "$300"];
   const podium = [players[1], players[0], players[2]].filter(Boolean);
   const rest = players.slice(3);
@@ -199,6 +269,77 @@ useEffect(() => {
             </tbody>
           </table>
         </div>
+
+<section className="mb-10">
+  <div className="mb-6">
+    <h2 className="text-3xl font-black tracking-wide flex items-center gap-3">
+      <Trophy className="text-yellow-400" size={30} />
+      PREVIOUS WINNERS
+    </h2>
+    <p className="text-zinc-400 mt-2">
+      Past PackDraw competitions and their top five winners.
+    </p>
+  </div>
+
+  {history.length === 0 ? (
+    <div className="rounded-3xl border border-purple-500/30 bg-black/60 p-8 text-center">
+      <Trophy className="mx-auto mb-4 text-purple-400" size={40} />
+      <p className="text-xl font-bold">No completed competitions yet</p>
+      <p className="text-zinc-400 mt-2">
+        Previous winners will appear here after the current competition ends.
+      </p>
+    </div>
+  ) : (
+    <div className="space-y-6">
+      {history.map((competition: any) => (
+        <div
+          key={competition.competition_start}
+          className="rounded-3xl border border-purple-500/40 bg-black/60 overflow-hidden"
+        >
+          <div className="p-6 border-b border-zinc-800">
+            <h3 className="text-xl font-black">
+              Competition ending{" "}
+              {new Date(competition.competition_end).toLocaleDateString(
+                "en-US",
+                {
+                  timeZone: "America/Los_Angeles",
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                }
+              )}
+            </h3>
+            <p className="text-purple-300 mt-1">
+              ${Number(competition.prize_pool).toLocaleString()} Prize Pool
+            </p>
+          </div>
+
+          <div className="divide-y divide-zinc-800">
+            {competition.players.map((player: any, index: number) => (
+              <div
+                key={index}
+                className="flex items-center justify-between gap-4 p-5"
+              >
+                <div>
+                  <p className="font-black text-lg">
+                    #{player.rank} {player.username}
+                  </p>
+                  <p className="text-zinc-400 text-sm">
+                    ${Number(player.wagerAmount).toLocaleString()} wagered
+                  </p>
+                </div>
+
+                <span className="text-green-400 font-black text-lg">
+                  ${Number(player.prize).toLocaleString()}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</section>
 
         <footer className="rounded-3xl border border-purple-500/30 bg-black/60 p-6 text-center text-zinc-300">
           18+ only. Please gamble responsibly.
