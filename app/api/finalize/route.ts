@@ -57,17 +57,19 @@ export async function POST(request: Request) {
       [key: string]: unknown;
     }>;
 
-    const winners = [...players]
-      .sort(
-        (a, b) =>
-          Number(b.wagerAmount) - Number(a.wagerAmount)
-      )
-      .slice(0, 5)
-      .map((player, index) => ({
-        ...player,
-        rank: index + 1,
-        prize: prizes[index],
-      }));
+   
+const winners = [...players]
+  .sort(
+    (a, b) =>
+      Number(b.wagerAmount) - Number(a.wagerAmount)
+  )
+  .slice(0, prizes.length)
+  .map((player, index) => ({
+    ...player,
+    rank: index + 1,
+    prize: prizes[index],
+  }));
+
 
     const result = await sql`
       INSERT INTO leaderboard_history

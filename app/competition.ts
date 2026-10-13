@@ -1,10 +1,12 @@
 
+
 export const CURRENT_COMPETITION = {
-  start: "2026-09-05T00:00:00-07:00",
-  end: "2026-10-11T00:00:00-07:00",
-  prizePool: 4000,
-  prizes: [1600, 1000, 700, 400, 300],
+  start: "2026-10-11T00:00:00-07:00",
+  end: "2026-11-11T00:00:00-08:00",
+  prizePool: 10000,
+  prizes: [4000, 2500, 1200, 800, 500, 300, 250, 200, 150, 100],
 };
+
 
 export function getCompetitionStart(now = new Date()) {
   const currentEnd = new Date(CURRENT_COMPETITION.end);

@@ -128,7 +128,18 @@ useEffect(() => {
   fetchHistory();
 }, []);
 
-  const prizes = ["$1600", "$1000", "$700", "$400", "$300"];
+  const prizes = [
+  "$4,000",
+  "$2,500",
+  "$1,200",
+  "$800",
+  "$500",
+  "$300",
+  "$250",
+  "$200",
+  "$150",
+  "$100",
+];
   const podium = [players[1], players[0], players[2]].filter(Boolean);
   const rest = players.slice(3);
 
@@ -175,9 +186,9 @@ useEffect(() => {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-5 mb-10">
-          <StatCard icon={<Trophy size={38} />} label="Prize Pool" value="$4000" />
+          <StatCard icon={<Trophy size={38} />} label="Prize Pool" value="$10,000" />
           <StatCard icon={<Timer size={38} />} label="Ends In" value={timeLeft} />
-          <StatCard icon={<Crown size={38} />} label="Top Prize" value="$1600" />
+          <StatCard icon={<Crown size={38} />} label="Top Prize" value="$4,000" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-10 items-end">
@@ -251,19 +262,15 @@ useEffect(() => {
                   <td className="p-5 text-green-400 font-black">
                     ${(player.wagered || 0).toLocaleString()}
                   </td>
-                  <td className="p-5">
-  {player.rank === 4 && (
+                  
+<td className="p-5">
+  {player.rank <= 10 && (
     <span className="rounded-full border border-purple-500/40 px-3 py-1 text-sm font-bold text-purple-300">
-      $400
-    </span>
-  )}
-
-  {player.rank === 5 && (
-    <span className="rounded-full border border-purple-500/40 px-3 py-1 text-sm font-bold text-purple-300">
-      $300
+      {prizes[player.rank - 1]}
     </span>
   )}
 </td>
+
                 </tr>
               ))}
             </tbody>
