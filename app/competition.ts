@@ -12,9 +12,11 @@ export function getCompetitionStart(now = new Date()) {
   const currentEnd = new Date(CURRENT_COMPETITION.end);
 
   // Keep the correct PackDraw API date format.
-  if (now < currentEnd) {
-    return "9-5-2026";
-  }
+ 
+if (now < currentEnd) {
+  return "10-11-2026";
+}
+
 
   const pacificDate = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Los_Angeles",
