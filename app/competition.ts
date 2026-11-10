@@ -1,23 +1,19 @@
-
-
 export const CURRENT_COMPETITION = {
   start: "2026-10-11T00:00:00-07:00",
-  end: "2026-11-11T00:00:00-08:00",
+  end: "2026-11-14T00:00:00-08:00",
   prizePool: 10000,
   prizes: [4000, 2500, 1200, 800, 500, 300, 250, 200, 150, 100],
 };
 
-
 export function getCompetitionStart(now = new Date()) {
   const currentEnd = new Date(CURRENT_COMPETITION.end);
 
-  // Keep the correct PackDraw API date format.
- 
-if (now < currentEnd) {
-  return "10-11-2026";
-}
+  // Keep the October 11 start date until this competition ends.
+  if (now < currentEnd) {
+    return "10-11-2026";
+  }
 
-
+  // Calculate future competition start dates using Pacific time.
   const pacificDate = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Los_Angeles",
     year: "numeric",
@@ -33,7 +29,7 @@ if (now < currentEnd) {
   let month = Number(parts.month);
   const day = Number(parts.day);
 
-  if (day < 11) {
+  if (day < 14) {
     month -= 1;
 
     if (month === 0) {
@@ -42,5 +38,5 @@ if (now < currentEnd) {
     }
   }
 
-  return `${month}-11-${year}`;
+  return `${month}-14-${year}`;
 }

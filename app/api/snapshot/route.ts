@@ -1,7 +1,7 @@
 
 import { NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
-
+import { CURRENT_COMPETITION } from "../../competition";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
@@ -29,8 +29,7 @@ export async function POST(request: Request) {
   try {
     const sql = neon(databaseUrl);
 
-    const start = "2026-10-11T00:00:00-07:00";
-const end = "2026-11-11T00:00:00-08:00";
+    const { start, end } = CURRENT_COMPETITION;
 
 if (Date.now() >= new Date(end).getTime()) {
   return NextResponse.json(
