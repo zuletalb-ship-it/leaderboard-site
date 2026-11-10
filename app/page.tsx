@@ -3,6 +3,7 @@ import { Marcellus, Urbanist } from "next/font/google";
 import { motion } from "framer-motion";
 import { Crown, Trophy, Timer, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
+import { CURRENT_COMPETITION } from "./competition";
 const luxuryFont = Marcellus({
   subsets: ["latin"],
   weight: ["400"],
@@ -21,61 +22,10 @@ const [timeLeft, setTimeLeft] = useState("");
 
 useEffect(() => {
   function updateCountdown() {
-    const now = new Date();
+    const now = Date.now();
+    const end = new Date(CURRENT_COMPETITION.end).getTime();
 
-    
-const pacificParts = new Intl.DateTimeFormat("en-US", {
-  timeZone: "America/Los_Angeles",
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-}).formatToParts(now);
-
-const parts = Object.fromEntries(
-  pacificParts.map((part) => [part.type, part.value])
-);
-
-let year = Number(parts.year);
-let month = Number(parts.month);
-
-if (Number(parts.day) >= 11) {
-  month++;
-
-  if (month > 12) {
-    month = 1;
-    year++;
-  }
-}
-
-
-const getPacificOffset = (year: number, month: number) => {
-  const secondSundayInMarch =
-    8 + ((7 - new Date(Date.UTC(year, 2, 1)).getUTCDay()) % 7);
-
-  const firstSundayInNovember =
-    1 + ((7 - new Date(Date.UTC(year, 10, 1)).getUTCDay()) % 7);
-
-  const isDaylightSaving =
-    month > 3 && month < 11
-      ? true
-      : month === 3
-        ? 11 >= secondSundayInMarch
-        : month === 11
-          ? 11 < firstSundayInNovember
-          : false;
-
-  return isDaylightSaving ? "-07:00" : "-08:00";
-};
-
-const offset = getPacificOffset(year, month);
-
-const nextEnd = new Date(
-  `${year}-${String(month).padStart(2, "0")}-11T00:00:00${offset}`
-);
-
-
-
-    const difference = nextEnd.getTime() - now.getTime();
+    const difference = Math.max(0, end - now);
 
     const days = Math.floor(difference / (1000 * 60 * 60 * 24));
     const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
