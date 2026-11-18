@@ -76,8 +76,13 @@ const winners = [...players]
         (competition_start, competition_end, players, prize_pool)
       VALUES
         (${start}, ${end}, ${JSON.stringify(winners)}::jsonb, ${prizePool})
-      ON CONFLICT (competition_start) DO NOTHING
-      RETURNING id
+      ON CONFLICT (competition_start)
+DO UPDATE SET
+  competition_end = EXCLUDED.competition_end,
+  players = EXCLUDED.players,
+  prize_pool = EXCLUDED.prize_pool,
+  finalized_at = NOW()
+RETURNING id
     `;
 
     return NextResponse.json({
